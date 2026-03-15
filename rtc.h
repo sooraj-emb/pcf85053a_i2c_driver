@@ -118,6 +118,7 @@ struct rtc_param {
 #define RTC_VL_BACKUP_SWITCH	_BITUL(4) /* Backup switchover happened */
 
 #define RTC_VL_READ	_IOR('p', 0x13, unsigned int)	/* Voltage low detection */
+#define RTC_CTRL_TWO_READ	_IOR('p', 0x15, unsigned int)
 #define RTC_VL_CLR	_IO('p', 0x14)		/* Clear voltage low information */
 
 /* interrupt flags */
