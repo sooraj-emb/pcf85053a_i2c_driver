@@ -321,7 +321,11 @@ static int pcf85053a_ioctl(struct device *dev, unsigned int cmd, unsigned long a
 
 		if (!(status & PCF85053A_REG_BAT_MASK))
 			val |= RTC_VL_DATA_INVALID;
-
+	case RTC_CTRL_TWO_READ:
+		status = regmap_read(pcf85053a->regmap, PCF85053A_REG_CTRL, &val);
+		if (status)
+			return status;
+		val &= 1;
 		return put_user(val, (unsigned int __user *)arg);
 
 	default:
@@ -507,7 +511,7 @@ static int pcf85053a_probe(struct i2c_client *client)
 				 GFP_KERNEL);
 	if (!pcf85053a)
 		return -ENOMEM;
-
+/* https://github.com/torvalds/linux/commit/564d73c4d9201526bd976b9379d2aaf1a7133e84 */
 	config = i2c_get_match_data(client);
 	if (!config)
 		return -ENODEV;
